@@ -6,7 +6,7 @@ import {
   Car,
   TreeDeciduous,
   Wifi,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 
 export default function FeaturesSection() {
@@ -18,7 +18,8 @@ export default function FeaturesSection() {
     },
     {
       title: "Security System",
-      description: "Gated Community, Access Control at entrance, CCTV surveillance",
+      description:
+        "Gated Community, Access Control at entrance, CCTV surveillance",
       icon: <ShieldCheck className="w-10 h-10 text-red-500" />,
     },
     {
@@ -33,7 +34,8 @@ export default function FeaturesSection() {
     },
     {
       title: "Landscape",
-      description: "Lush Green Parks with Jogging Tracks / Fountains / Water Bodies",
+      description:
+        "Lush Green Parks with Jogging Tracks / Fountains / Water Bodies",
       icon: <TreeDeciduous className="w-10 h-10 text-pink-500" />,
     },
     {
@@ -44,27 +46,45 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="bg-white py-16 px-4" id="features">
-      {/* Heading */}
-      <header className="mb-12 flex justify-center">
-        <div className="inline-flex items-center bg-orange-500 text-white px-6 py-2 rounded-full text-lg font-semibold shadow-sm">
-          <CheckCircle className="w-5 h-5 mr-2" />
-          Our Features
-        </div>
-      </header>
+    <section
+      className="relative py-20 px-4"
+      id="features"
+    >
+      {/* ✅ Background with overlay */}
+      <div className="absolute inset-0">
+        <img
+          src="https://picsum.photos/1920/1080?grayscale" // yaha apna background image daalna
+          alt="Features Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-orange-900/70"></div>
+      </div>
 
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {features.map((feature, index) => (
-          <div
-            key={index}
-            className="text-center bg-white border border-orange-100 rounded-lg p-6 shadow hover:shadow-md transition"
-          >
-            <div className="mb-4 flex justify-center">{feature.icon}</div>
-            <h4 className="text-lg font-semibold text-gray-800 mb-2">{feature.title}</h4>
-            <p className="text-sm text-gray-600">{feature.description}</p>
+      {/* ✅ Content */}
+      <div className="relative max-w-6xl mx-auto">
+        {/* Heading */}
+        <header className="mb-12 flex justify-center">
+          <div className="inline-flex items-center bg-white/90 text-orange-600 px-8 py-3 rounded-full text-2xl font-bold shadow-lg">
+            <CheckCircle className="w-6 h-6 mr-2" />
+            Our Features
           </div>
-        ))}
+        </header>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="text-center bg-white/90 border border-orange-100 rounded-xl p-6 shadow-md hover:shadow-lg transition"
+            >
+              <div className="mb-4 flex justify-center">{feature.icon}</div>
+              <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                {feature.title}
+              </h4>
+              <p className="text-base text-gray-600">{feature.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

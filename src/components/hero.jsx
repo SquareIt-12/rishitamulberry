@@ -3,9 +3,9 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
-import Img1 from "/images/banner1.jpg";
-import Img2 from "/images/banner2.jpg";
-import Img3 from "/images/banner7.jpg";
+// import Img1 from "/images/banner1.jpg";
+import Img2 from "/images/rishita1.jpg";
+import Img3 from "/images/banner4.jpg";
 
 
 const slides = [
@@ -15,9 +15,9 @@ const slides = [
   {
     image: Img2,
   },
-  {
-    image: Img1,
-  },
+  // {
+  //   image: Img1,
+  // },
 ];
 
 const Banner = () => {

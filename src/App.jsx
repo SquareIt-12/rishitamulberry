@@ -47,7 +47,7 @@ function App() {
       <FeaturesSection />
       <FloorPlanSection />
       <GallerySection />
-      <TestimonialSection />
+      {/* <TestimonialSection /> */}
       {/* <PricePlanSection /> */}
       <ContactSection />
       <EnquiryFormPopup />

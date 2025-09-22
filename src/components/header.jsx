@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Download } from "lucide-react";
+import { database } from "../firebase"; 
+import { ref, push } from "firebase/database"; 
+import { toast, ToastContainer, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 import Logo from "/images/rishita-logo.png";
+import brochure1 from "/images/Mulberry-brochure.pdf"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", mobile: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      const reraHeight = 10; // Approximate height of RERA section
+      const reraHeight = 10;
       setIsScrolled(window.scrollY > reraHeight);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
 
   const navigationItems = [
     { name: "Home", href: "#" },
@@ -23,82 +30,157 @@ export default function Header() {
     { name: "Features", href: "#features" },
     { name: "Floor Plan", href: "#floorplan" },
     { name: "Gallery", href: "#gallery" },
-    // { name: "Plans", href: "#priceplan" },
-    { name: "Testimonials", href: "#testimonial" },
     { name: "Contact", href: "#contact" },
   ];
 
+  const handleDownloadClick = () => {
+    setShowEnquiryModal(true);
+  };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+
+    const { name, email, mobile } = form;
+
+    // ✅ Validation
+    if (!name || name.trim().length < 3) {
+      toast.error("Name must be at least 3 characters long.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    const phoneRegex = /^\d{10}$/;
+    if (!mobile || !phoneRegex.test(mobile)) {
+      toast.error("Mobile number must be 10 digits.");
+      return;
+    }
+
+    const entry = {
+      name: name.trim(),
+      email: email.trim(),
+      mobile: mobile.trim(),
+      timestamp: Date.now(),
+      source: "brochure_download",
+    };
+
+    try {
+      // ✅ Directly write (skip duplicate check — read not allowed by rules)
+      await push(ref(database, "popupEnquiries"), entry);
+      await push(ref(database, "allEnquiries"), entry);
+
+      toast.success("Form submitted successfully!");
+
+      setShowEnquiryModal(false);
+      setForm({ name: "", email: "", mobile: "" });
+
+      // Start brochure download
+      downloadBrochure();
+
+      // Redirect to thank you page
+      setTimeout(() => {
+        navigate("/thanks");
+      }, 1000);
+    } catch (error) {
+      console.error("Error while submitting:", error);
+      if (error.code === "PERMISSION_DENIED") {
+        toast.error("Permission denied. Check Firebase rules.");
+      } else {
+        toast.error(`Error: ${error.message || "Please try again."}`);
+      }
+    }
+  };
+
+  const downloadBrochure = () => {
+    // Replace with actual hosted brochure path (e.g. public folder or storage)
+    const brochureUrl = brochure1;
+    const link = document.createElement("a");
+    link.href = brochureUrl;
+    link.download = "Mulberru-Brochure.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const closeModal = () => {
+    setShowEnquiryModal(false);
+    setForm({ name: "", email: "", mobile: "" });
+  };
+
   return (
     <>
-      {/* RERA section - This will scroll with the page */}
+      {/* RERA section */}
       <div className="bg-orange-500 flex items-center justify-between px-4 py-2 text-xs sm:text-sm text-white">
         <span className="lg:text-md md:text-md text-sm">
           Rera no: UPRERAAGT17933
         </span>
         <a
           href="tel:+918750488908"
-          className="bg-white hover:bg-white text-orange-500 px-3 py-1 rounded-full flex items-center gap-2"
+          className="bg-white text-orange-500 px-3 py-1 rounded-full flex items-center gap-2"
         >
           <Phone size={16} />
           <span>+91 8750488908</span>
         </a>
       </div>
 
-      {/* Fixed Header - Position changes based on scroll */}
+      {/* Header */}
       <header
         className={`fixed left-0 right-0 bg-white shadow-sm z-50 border-b border-gray-100 transition-all duration-300 ${
           isScrolled ? "top-0" : "top-11"
         }`}
       >
-       {/* <header
-        className="fixed left-0 right-0 bg-white shadow-sm z-50 border-b border-gray-100 transition-all duration-300 top-0"
-      > */}
         <div className="max-w-7xl py-2 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-           
-           <img src={Logo} alt="" className="h-32 w-32" style={{objectFit: 'contain'}} />
+            <img
+              src={Logo}
+              alt="Logo"
+              className="h-32 w-32 object-contain"
+            />
 
-            {/* Desktop Navigation */}
+            {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center space-x-8">
               {navigationItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className={`text-sm font-medium focus:text-orange-400 transition-colors duration-200 ${
-                    item.active
-                      ? "text-orange-500"
-                      : "text-gray-600 hover:text-orange-500"
-                  }`}
+                  className="text-sm font-serif text-gray-600 hover:text-orange-500 focus:text-orange-400 transition-colors duration-200"
                 >
                   {item.name}
                 </a>
               ))}
             </nav>
 
-
-            {/* Contact Button - exact match */}
-            {/* <div className="hidden lg:flex">
-              <a
-                href="tel:+918808698649"
-                className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-2 shadow-sm"
+            {/* Download Button (Desktop) */}
+            <div className="hidden lg:flex">
+              <button
+                onClick={handleDownloadClick}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
-                <Phone size={16} />
-                <span>+91 8808698649</span>
-              </a>
-            </div> */}
+                <Download size={16} />
+                <span>Download Brochure</span>
+              </button>
+            </div>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu toggle */}
             <div className="lg:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-600 hover:text-orange-500 p-2 rounded-md transition-colors"
+                className="text-gray-600 hover:text-orange-500 p-2 rounded-md"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
           </div>
 
-          {/* Mobile Navigation */}
+          {/* Mobile Nav */}
           {isMenuOpen && (
             <div className="lg:hidden border-t border-gray-100">
               <div className="py-2 space-y-1 bg-white">
@@ -106,20 +188,30 @@ export default function Header() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className={`block px-4 py-3 text-base font-medium transition-colors duration-200 ${
-                      item.active
-                        ? "text-orange-500 bg-orange-50"
-                        : "text-gray-600 hover:text-orange-500 hover:bg-gray-50"
-                    }`}
                     onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-3 text-base font-medium text-gray-600 hover:text-orange-500 hover:bg-gray-50"
                   >
                     {item.name}
                   </a>
                 ))}
+
+                <div className="px-4 py-3">
+                  <button
+                    onClick={() => {
+                      handleDownloadClick();
+                      setIsMenuOpen(false);
+                    }}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center justify-center space-x-2 w-full shadow-lg"
+                  >
+                    <Download size={16} />
+                    <span>Download Brochure</span>
+                  </button>
+                </div>
+
                 <div className="px-4 py-3">
                   <a
                     href="tel:+917234008553"
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center space-x-2 w-full shadow-sm"
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-medium flex items-center justify-center space-x-2 w-full"
                   >
                     <Phone size={16} />
                     <span>+91 7234008553</span>
@@ -131,13 +223,77 @@ export default function Header() {
         </div>
       </header>
 
+      {/* Enquiry Modal */}
+      {showEnquiryModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 backdrop-blur-[6px] bg-black/50"
+            onClick={closeModal}
+          ></div>
 
-      {/* Spacer div to account for the header height - adjusts based on scroll */}
-      {/* <div
-        className={`transition-all duration-300 ${
-          isScrolled ? "h-16" : "h-26"
-        }`}
-      ></div> */}
+          <div className="relative bg-white shadow-2xl p-6 rounded-xl w-[400px] mx-auto border-2 border-orange-400">
+            <div className="flex justify-center mb-4">
+              <img src={Logo} alt="Logo" className="h-12 w-auto" />
+            </div>
+
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold text-orange-600">
+                DOWNLOAD BROCHURE
+              </h2>
+              <button onClick={closeModal}>
+                <X className="text-red-600 absolute top-2 right-2 cursor-pointer w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Name*"
+                className="w-full mb-3 p-3 border border-orange-300 rounded bg-orange-50 placeholder-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Email*"
+                className="w-full mb-3 p-3 border border-orange-300 rounded bg-orange-50 placeholder-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              <input
+                type="tel"
+                name="mobile"
+                value={form.mobile}
+                onChange={handleChange}
+                placeholder="Mobile*"
+                className="w-full mb-4 p-3 border border-orange-300 rounded bg-orange-50 placeholder-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded flex items-center justify-center space-x-2"
+              >
+                <Download size={18} />
+                <span>DOWNLOAD BROCHURE</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover={false}
+        draggable={false}
+        theme="light"
+        transition={Bounce}
+      />
     </>
   );
 }
