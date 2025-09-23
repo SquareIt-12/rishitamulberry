@@ -57,7 +57,7 @@ export default function FeaturesSection() {
           alt="Features Background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-orange-900/70"></div>
+        <div className="absolute inset-0 bg-orange-900/50"></div>
       </div>
 
       {/* ✅ Content */}

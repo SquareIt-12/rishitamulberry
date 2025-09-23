@@ -80,13 +80,13 @@ export default function FloorPlanSection() {
             onClick={handleMulberry}
             className="py-2 lg:p-3 bg-blue-300 lg:text-lg md:text-md text-xs font-semibold lg:w-full  text-black rounded-lg cursor-pointer mt-3 hover:bg-blue-400 "
           >
-            Mulberry Heights Brochure
+           Download Mulberry Heights Brochure
           </button>
           <button
             onClick={handleSerenity}
             className="py-2 lg:p-3 bg-blue-300 lg:text-lg md:text-md text-xs  text-black font-semibold rounded-lg lg:w-full cursor-pointer mt-3 hover:bg-blue-400 "
           >
-            Serenity Brochure
+            Download Serenity Brochure
           </button>
         </div>
       </div>

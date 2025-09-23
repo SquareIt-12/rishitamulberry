@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Menu, X, Phone, Download } from "lucide-react";
-import { database } from "../firebase"; 
-import { ref, push } from "firebase/database"; 
+import { database } from "../firebase";
+import { ref, push } from "firebase/database";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Logo from "/images/rishita-logo.png";
-import brochure1 from "/images/Mulberry-brochure.pdf"
+import brochure1 from "/images/Mulberry-brochure.pdf";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,34 +46,16 @@ export default function Header() {
 
     const { name, email, mobile } = form;
 
-    // ✅ Validation
-    if (!name || name.trim().length < 3) {
-      toast.error("Name must be at least 3 characters long.");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-
-    const phoneRegex = /^\d{10}$/;
-    if (!mobile || !phoneRegex.test(mobile)) {
-      toast.error("Mobile number must be 10 digits.");
-      return;
-    }
-
     const entry = {
       name: name.trim(),
       email: email.trim(),
       mobile: mobile.trim(),
       timestamp: Date.now(),
-      source: "brochure_download",
+      source: "header_form",
     };
 
     try {
-      // ✅ Directly write (skip duplicate check — read not allowed by rules)
+      // ✅ Save to Firebase
       await push(ref(database, "popupEnquiries"), entry);
       await push(ref(database, "allEnquiries"), entry);
 
@@ -82,32 +64,22 @@ export default function Header() {
       setShowEnquiryModal(false);
       setForm({ name: "", email: "", mobile: "" });
 
-      // Start brochure download
-      downloadBrochure();
+      // ✅ Start brochure download
+      const link = document.createElement("a");
+      link.href = brochure1;
+      link.download = "Mulberry-Brochure.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-      // Redirect to thank you page
+      // ✅ Redirect to thank you page
       setTimeout(() => {
         navigate("/thanks");
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error("Error while submitting:", error);
-      if (error.code === "PERMISSION_DENIED") {
-        toast.error("Permission denied. Check Firebase rules.");
-      } else {
-        toast.error(`Error: ${error.message || "Please try again."}`);
-      }
+      toast.error("Error submitting form. Please try again.");
     }
-  };
-
-  const downloadBrochure = () => {
-    // Replace with actual hosted brochure path (e.g. public folder or storage)
-    const brochureUrl = brochure1;
-    const link = document.createElement("a");
-    link.href = brochureUrl;
-    link.download = "Mulberru-Brochure.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const closeModal = () => {
@@ -139,11 +111,7 @@ export default function Header() {
       >
         <div className="max-w-7xl py-2 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <img
-              src={Logo}
-              alt="Logo"
-              className="h-32 w-32 object-contain"
-            />
+            <img src={Logo} alt="Logo" className="h-32 w-32 object-contain" />
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center space-x-8">
@@ -151,7 +119,7 @@ export default function Header() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-sm font-serif text-gray-600 hover:text-orange-500 focus:text-orange-400 transition-colors duration-200"
+                  className="text-md font-serif text-gray-900 hover:text-orange-500 focus:text-orange-400 transition-colors duration-200"
                 >
                   {item.name}
                 </a>
@@ -201,7 +169,7 @@ export default function Header() {
                       handleDownloadClick();
                       setIsMenuOpen(false);
                     }}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center justify-center space-x-2 w-full shadow-lg"
+                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2.5 rounded-full text-sm font-medium flex items-center justify-center space-x-2 w-full shadow-lg"
                   >
                     <Download size={16} />
                     <span>Download Brochure</span>
