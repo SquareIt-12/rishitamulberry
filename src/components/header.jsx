@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Menu, X, Phone, Download } from "lucide-react";
 import { database } from "../firebase";
 import { ref, push } from "firebase/database";
@@ -15,14 +15,15 @@ export default function Header() {
   const [form, setForm] = useState({ name: "", email: "", mobile: "" });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const reraHeight = 10;
-      setIsScrolled(window.scrollY > reraHeight);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // ✅ Direct scroll listener (no useEffect)
+  window.onscroll = () => {
+    const reraHeight = 10;
+    if (window.scrollY > reraHeight) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
 
   const navigationItems = [
     { name: "Home", href: "#" },
@@ -55,7 +56,6 @@ export default function Header() {
     };
 
     try {
-      // ✅ Save to Firebase
       await push(ref(database, "popupEnquiries"), entry);
       await push(ref(database, "allEnquiries"), entry);
 
@@ -64,7 +64,7 @@ export default function Header() {
       setShowEnquiryModal(false);
       setForm({ name: "", email: "", mobile: "" });
 
-      // ✅ Start brochure download
+      // ✅ Brochure download
       const link = document.createElement("a");
       link.href = brochure1;
       link.download = "Mulberry-Brochure.pdf";
@@ -72,7 +72,6 @@ export default function Header() {
       link.click();
       document.body.removeChild(link);
 
-      // ✅ Redirect to thank you page
       setTimeout(() => {
         navigate("/thanks");
       }, 500);

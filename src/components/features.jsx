@@ -53,11 +53,11 @@ export default function FeaturesSection() {
       {/* ✅ Background with overlay */}
       <div className="absolute inset-0">
         <img
-          src="https://picsum.photos/1920/1080?grayscale" // yaha apna background image daalna
+          src="/images/rishita1.jpg" // yaha apna background image daalna
           alt="Features Background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-orange-900/50"></div>
+        <div className="absolute inset-0 bg-orange-900/70"></div>
       </div>
 
       {/* ✅ Content */}
