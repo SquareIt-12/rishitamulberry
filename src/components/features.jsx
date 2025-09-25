@@ -53,18 +53,18 @@ export default function FeaturesSection() {
       {/* ✅ Background with overlay */}
       <div className="absolute inset-0">
         <img
-          src="/images/rishita1.jpg" // yaha apna background image daalna
+          src="/images/bg-banner.jpg"
           alt="Features Background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-orange-900/70"></div>
+        <div className="absolute inset-0"></div>
       </div>
 
       {/* ✅ Content */}
       <div className="relative max-w-6xl mx-auto">
         {/* Heading */}
         <header className="mb-12 flex justify-center">
-          <div className="inline-flex items-center bg-white/90 text-orange-600 px-8 py-3 rounded-full text-2xl font-bold shadow-lg">
+          <div className="inline-flex items-center bg-orange-500 text-white px-8 py-3 rounded-full text-2xl font-semibold shadow-lg">
             <CheckCircle className="w-6 h-6 mr-2" />
             Our Features
           </div>
