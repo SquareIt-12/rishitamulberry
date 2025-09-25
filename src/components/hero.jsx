@@ -47,11 +47,14 @@ export default function Banner() {
   };
 
   return (
-    <section
-      id="hero"
-      className="relative h-[90vh] flex items-center bg-cover bg-center"
-      style={{ backgroundImage: `url(${banner})` }}
-    >
+    <section id="hero" class="relative h-[90vh] flex items-center">
+      <img
+        src="/images/rishita1.webp"
+        alt="Hero"
+        fetchpriority="high"
+        decoding="async"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
       <div className="relative w-full h-full">
         <div className="absolute bottom-2 lg:flex lg:flex-col hidden lg:left-16 z-10 bg-black/50 px-10 py-2 rounded-lg shadow-lg">
           <h1 className="text-1xl font-bold text-white mb-2">
@@ -77,7 +80,9 @@ export default function Banner() {
       {isOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-700">Enquiry Form</h2>
+            <h2 className="text-xl font-bold mb-4 text-gray-700">
+              Enquiry Form
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
