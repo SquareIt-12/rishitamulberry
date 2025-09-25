@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { CheckCircle } from "lucide-react";
 
 // Images
-import gall1 from "/images/gall1.jpg";
-import gall2 from "/images/gall2.jpg";
-import gall3 from "/images/gall3.jpg";
+import gall1 from "/images/gall1.webp";
+import gall2 from "/images/gall2.webp";
+import gall3 from "/images/gall3.webp";
 import gall4 from "/images/gall4.jpg";
 
 import gall5 from "/images/ris1.jpg";
@@ -104,6 +104,7 @@ export default function GallerySection() {
     <img
       src={allGalleryImages[popupIndex].src}
       alt={allGalleryImages[popupIndex].alt}
+      loading="lazy"
       className="w-full max-w-3xl h-auto rounded shadow-xl"
     />
 

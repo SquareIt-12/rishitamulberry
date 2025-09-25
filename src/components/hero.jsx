@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Download } from "lucide-react";
-import banner from "/images/rishita1.jpg";
+import banner from "/images/rishita1.webp";
 import { database } from "../firebase";
 import { ref, push } from "firebase/database";
 import { useNavigate } from "react-router-dom";

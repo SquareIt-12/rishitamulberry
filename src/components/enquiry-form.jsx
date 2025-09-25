@@ -62,7 +62,7 @@ export default function EnquiryFormPopup() {
 
           <div className="relative bg-white shadow-2xl p-6 rounded-xl w-[400px] mx-auto border-2 border-orange-400">
             <div className="flex justify-center mb-4">
-              <img src="/images/rishita-logo.png" alt="Logo" className="h-12 w-auto" />
+              <img src="/images/rishita-logo.webp" alt="Logo" className="h-12 w-auto" />
             </div>
 
             <div className="flex justify-between items-center mb-4">

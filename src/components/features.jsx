@@ -53,8 +53,9 @@ export default function FeaturesSection() {
       {/* ✅ Background with overlay */}
       <div className="absolute inset-0">
         <img
-          src="/images/bg-banner.jpg"
+          src="/images/bg-banner.webp"
           alt="Features Background"
+          loading="lazy"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0"></div>

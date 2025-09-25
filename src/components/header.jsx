@@ -5,7 +5,7 @@ import { ref, push } from "firebase/database";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import Logo from "/images/rishita-logo.png";
+import Logo from "/images/rishita-logo.webp";
 import brochure1 from "/images/Mulberry-brochure.pdf";
 
 export default function Header() {
@@ -110,7 +110,7 @@ export default function Header() {
       >
         <div className="max-w-7xl py-2 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <img src={Logo} alt="Logo" className="h-32 w-32 object-contain" />
+            <img src={Logo} alt="Logo" loading="lazy" className="h-32 w-32 object-contain" />
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center space-x-8">

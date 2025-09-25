@@ -1,6 +1,6 @@
 import React from "react";
-import floorPlanImg1 from "/images/floor3.jpg";
-import floorPlanImg2 from "/images/floor2.jpg";
+import floorPlanImg1 from "/images/floor3.webp";
+import floorPlanImg2 from "/images/floor2.webp";
 import Mulberry from "/images/Mulberry-brochure.pdf";
 import Serenity from "/images/Serenity-brochure.pdf";
 import { CheckCircle } from "lucide-react";
@@ -36,10 +36,7 @@ export default function FloorPlanSection() {
         <div className="w-full">
           <div className="property-wrapper">
             <div className="property">
-              <button
-                onClick={handleImageClick}
-                className="image-popup block w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg overflow-hidden hover:opacity-90 transition-opacity duration-300"
-              >
+              
                 <div className="image-wrapper">
                   <div className="text-center">
                     <img
@@ -50,17 +47,13 @@ export default function FloorPlanSection() {
                     />
                   </div>
                 </div>
-              </button>
             </div>
           </div>
         </div>
         <div className="w-full">
           <div className="property-wrapper">
             <div className="property">
-              <button
-                onClick={handleImageClickOne}
-                className="image-popup block w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-lg overflow-hidden hover:opacity-90 transition-opacity duration-300"
-              >
+              
                 <div className="image-wrapper">
                   <div className="text-center">
                     <img
@@ -71,11 +64,10 @@ export default function FloorPlanSection() {
                     />
                   </div>
                 </div>
-              </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row lg:gap-x-28 justify-between">
+        {/* <div className="flex flex-col lg:flex-row lg:gap-x-28 justify-between">
           <button
             onClick={handleMulberry}
             className="py-2 lg:p-3 bg-blue-300 lg:text-lg md:text-md text-xs font-semibold lg:w-full  text-black rounded-lg cursor-pointer mt-3 hover:bg-blue-400 "
@@ -88,7 +80,7 @@ export default function FloorPlanSection() {
           >
             Download Serenity Brochure
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );
