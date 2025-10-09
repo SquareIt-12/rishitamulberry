@@ -6,12 +6,10 @@ import gall1 from "/images/gall1.webp";
 import gall2 from "/images/gall2.webp";
 import gall3 from "/images/gall3.webp";
 import gall4 from "/images/gall4.jpg";
-
 import gall5 from "/images/ris1.jpg";
 import gall6 from "/images/ris2.jpg";
 import gall8 from "/images/ris4.jpg";
 import gall9 from "/images/ris5.jpg";
-
 import gall13 from "/images/ris9.jpg";
 import gall14 from "/images/ris10.jpg";
 import gall15 from "/images/ris11.jpg";
@@ -35,89 +33,79 @@ export default function GallerySection() {
 
   const openPopup = (index) => setPopupIndex(index);
   const closePopup = () => setPopupIndex(null);
-
   const showPrev = () =>
     setPopupIndex((prevIndex) => (prevIndex - 1 + allGalleryImages.length) % allGalleryImages.length);
-
   const showNext = () =>
     setPopupIndex((prevIndex) => (prevIndex + 1) % allGalleryImages.length);
 
-  const PropertyItem = ({ image, index }) => (
-    <section className="w-full sm:w-1/2 md:w-1/4 px-2 mb-4 scroll-mt-20">
-      <div className="property-wrapper">
-        <div className="property">
-          <button
-            onClick={() => openPopup(index)}
-            className="image-popup cursor-pointer block w-full focus:outline-none rounded-lg overflow-hidden group"
-          >
-            <div className="image-wrapper">
+  return (
+    <section id="gallery" className="bg-white py-12">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center bg-orange-500 text-white/90 px-8 py-3 rounded-full text-2xl font-semibold shadow-lg">
+            <CheckCircle className="w-6 h-6 mr-2" />
+            Gallery
+          </div>
+        </div>
+
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {allGalleryImages.map((image, index) => (
+            <button
+              key={index}
+              onClick={() => openPopup(index)}
+              className="group overflow-hidden rounded-lg focus:outline-none"
+            >
               <img
                 src={image.src}
                 alt={image.alt}
                 loading="lazy"
-                className="w-full h-48 sm:h-40 md:h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-40 sm:h-44 md:h-48 object-cover transform transition-transform duration-300 group-hover:scale-110"
               />
-            </div>
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-
-  return (
-    <section id="gallery" className="block bg-white py-12">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-8">
-           <div className="inline-flex items-center bg-orange-500 text-white/90 px-8 py-3 rounded-full text-2xl font-semibold shadow-lg">
-              <CheckCircle className="w-6 h-6 mr-2" />
-              Gallery
-            </div>
-        </div>
-
-        <div className="flex flex-wrap -mx-2">
-          {allGalleryImages.map((image, index) => (
-            <PropertyItem key={index} image={image} index={index} />
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Modal Popup with Prev/Next */}
+      {/* Modal Popup */}
       {popupIndex !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 p-4 sm:p-8"
           onClick={closePopup}
         >
           <div
-  className="max-w-4xl mx-auto p-4"
-  onClick={(e) => e.stopPropagation()} // Prevent modal close on image click
->
-  <div className="flex items-center justify-center gap-4">
-    {/* Prev Button */}
-    <button
-      onClick={showPrev}
-      className="bg-white text-black border border-gray-300 px-4 py-2 rounded shadow hover:bg-gray-100"
-    >
-      Prev
-    </button>
+            className="relative max-w-4xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={allGalleryImages[popupIndex].src}
+              alt={allGalleryImages[popupIndex].alt}
+              className="w-full h-auto max-h-[85vh] rounded-lg object-contain shadow-xl"
+            />
+            {/* Controls */}
+            <div className="absolute top-1/2 left-0 right-0 flex justify-between px-2 sm:px-4 -translate-y-1/2">
+              <button
+                onClick={showPrev}
+                className="bg-white/80 hover:bg-white text-black px-3 py-1 sm:px-5 sm:py-2 rounded-full text-sm sm:text-base font-semibold shadow-md"
+              >
+                Prev
+              </button>
+              <button
+                onClick={showNext}
+                className="bg-white/80 hover:bg-white text-black px-3 py-1 sm:px-5 sm:py-2 rounded-full text-sm sm:text-base font-semibold shadow-md"
+              >
+                Next
+              </button>
+            </div>
+          </div>
 
-    {/* Image */}
-    <img
-      src={allGalleryImages[popupIndex].src}
-      alt={allGalleryImages[popupIndex].alt}
-      loading="lazy"
-      className="w-full max-w-3xl h-auto rounded shadow-xl"
-    />
-
-    {/* Next Button */}
-    <button
-      onClick={showNext}
-      className="bg-white text-black border border-gray-300 px-4 py-2 rounded shadow hover:bg-gray-100"
-    >
-      Next
-    </button>
-  </div>
-</div>
-
+          {/* Close Button */}
+          <button
+            onClick={closePopup}
+            className="mt-4 text-white bg-red-600 hover:bg-red-700 px-6 py-2 rounded-full font-medium"
+          >
+            Close
+          </button>
         </div>
       )}
     </section>
