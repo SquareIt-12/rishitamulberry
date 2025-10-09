@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { CheckCircle } from "lucide-react";
 
 // Images
-import gall1 from "/images/gall1.webp";
-import gall2 from "/images/gall2.webp";
-import gall3 from "/images/gall3.webp";
-import gall4 from "/images/gall4.jpg";
-import gall5 from "/images/ris1.jpg";
-import gall6 from "/images/ris2.jpg";
-import gall8 from "/images/ris4.jpg";
+import gall1 from "/images/gall1.avif";
+import gall2 from "/images/gall2.avif";
+import gall3 from "/images/gall3.avif";
+import gall4 from "/images/gall4.avif";
+import gall5 from "/images/ris1.avif";
+import gall6 from "/images/ris2.avif";
+import gall8 from "/images/ris4.avif";
 import gall9 from "/images/ris5.jpg";
 import gall13 from "/images/ris9.jpg";
 import gall14 from "/images/ris10.jpg";
